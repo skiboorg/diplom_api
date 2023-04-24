@@ -11,7 +11,7 @@ redis
 
 django-cleanup
 django-ckeditor
-
+django-filter
 pytils
 
 

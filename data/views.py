@@ -1,4 +1,9 @@
 import json
+
+import django_filters
+from django_filters import IsoDateTimeFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework.response import Response
 from .serializers import *
 from .models import *
@@ -65,11 +70,37 @@ class OrderViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
+class ManagerOrderFilter(django_filters.FilterSet):
+    start_date_gte = IsoDateTimeFilter(field_name="start_date", lookup_expr='gte')
+
+    class Meta:
+        model = Order
+        fields = {
+            'start_date': ('lte', 'gte'),
+            'is_dead_line_soon': ('exact',),
+            'is_done': ('exact',),
+            'user__is_vip': ('exact',),
+            'service__id': ('exact',),
+            'pay_status__id': ('exact',),
+            'order_status__id': ('exact',),
+        }
 
 class ManagerOrder(generics.ListAPIView):
     serializer_class = OrderSerializer
     queryset = Order.objects.all()
     lookup_field = 'created_by__uuid'
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = ManagerOrderFilter
+    filterset_fields = ['is_dead_line_soon',
+                        'is_done',
+                        'user__is_vip',
+                        'service__id',
+                        'start_date__gte',
+                        'status__id',
+                        'pay_status__id',
+                        'order_status__id',
+                        ]
+    ordering_fields = ['start_date', 'end_date']
 
 class UserOrder(generics.ListAPIView):
     serializer_class = OrderSerializer

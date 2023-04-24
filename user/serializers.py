@@ -39,6 +39,10 @@ class UserSaveSerializer(serializers.ModelSerializer):
             'fio',
             "phone",
             "uuid",
+            "is_vip",
+            "is_problem",
+            "is_manager",
+            "is_staff",
         ]
 
 class UserSerializer(serializers.ModelSerializer):

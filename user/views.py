@@ -116,6 +116,11 @@ class GetUserByUuid(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     lookup_field = 'uuid'
 
+class GetNetworks(generics.ListAPIView):
+    queryset = UserNetworks.objects.all()
+    serializer_class = UserNetworksSerializer
+
+
 class DeleteUserByUuid(generics.DestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -124,6 +129,11 @@ class DeleteUserByUuid(generics.DestroyAPIView):
 class DeleteUserFile(generics.DestroyAPIView):
     queryset = UserFile.objects.all()
     serializer_class = UserFileSerializer
+    lookup_field = 'id'
+
+class DeleteUserComment(generics.DestroyAPIView):
+    queryset = UserComment.objects.all()
+    serializer_class = UserCommentSerializer
     lookup_field = 'id'
 
 class DeleteUserNetwork(generics.DestroyAPIView):

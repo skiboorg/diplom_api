@@ -26,7 +26,19 @@ class UserFileSerializer(serializers.ModelSerializer):
         model = UserFile
         fields = '__all__'
 
+
+class UserCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserComment
+        fields = '__all__'
+
+class UserNetworksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserNetworks
+        fields = '__all__'
+
 class UserNetworkSerializer(serializers.ModelSerializer):
+    network = UserNetworksSerializer(many=False, required=False, read_only=True)
     class Meta:
         model = UserNetwork
         fields = '__all__'
@@ -48,6 +60,7 @@ class UserSaveSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     networks = UserNetworkSerializer(many=True, required=False, read_only=True)
     files = UserFileSerializer(many=True, required=False, read_only=True)
+    comments = UserCommentSerializer(many=True, required=False, read_only=True)
 
     class Meta:
         model = User
@@ -64,9 +77,9 @@ class UserSerializer(serializers.ModelSerializer):
                 "is_staff",
                 'date_joined',
             'email',
-            'comment',
             'files',
-            'networks'
+            'networks',
+            'comments'
 
         ]
 

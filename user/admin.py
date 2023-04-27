@@ -3,6 +3,14 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import *
 
+class UserNetworkInline (admin.StackedInline):
+    model = UserNetwork
+    extra = 0
+
+class UserCommentInline (admin.StackedInline):
+    model = UserComment
+    extra = 0
+
 class UserAdmin(BaseUserAdmin):
     list_display = (
         'login',
@@ -12,7 +20,7 @@ class UserAdmin(BaseUserAdmin):
 
     )
     ordering = ('id',)
-    #inlines = []
+    inlines = [UserNetworkInline,UserCommentInline]
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -40,7 +48,6 @@ class UserAdmin(BaseUserAdmin):
          {'fields': (
              'added_by',
              'email',
-             'comment',
                 "fio",
                 "phone",
                 "is_private",
@@ -53,6 +60,8 @@ class UserAdmin(BaseUserAdmin):
         ('Permissions', {'fields': ('is_staff', 'is_superuser', 'groups',)}),)
 
 admin.site.register(User,UserAdmin)
+admin.site.register(UserNetworks)
+admin.site.register(UserComment)
 
 
 

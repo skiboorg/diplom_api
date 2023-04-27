@@ -57,8 +57,6 @@ class User(AbstractUser):
     is_problem = models.BooleanField('проблемный', default=False)
     is_manager = models.BooleanField('Менедждер', default=False)
 
-    comment = models.TextField('Комментарий', blank=True, null=True)
-
     USERNAME_FIELD = 'login'
     REQUIRED_FIELDS = []
     objects = UserManager()
@@ -74,12 +72,25 @@ class UserFile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=True, related_name='files')
     file = models.FileField(upload_to='user/file', blank=False, null=True)
     description = models.CharField(max_length=255, blank=False, null=True)
+    created_at = models.DateField(auto_now_add=True, null=True)
 
+
+class UserNetworks(models.Model):
+    name = models.CharField(max_length=255, blank=False, null=True)
+    icon = models.TextField(blank=False, null=True)
+
+    def __str__(self):
+        return f'{self.name}'
 
 class UserNetwork(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=True, related_name='networks')
-    name = models.CharField(max_length=255, blank=False, null=True)
+    network = models.ForeignKey(UserNetworks, on_delete=models.CASCADE, blank=False, null=True)
     link = models.CharField(max_length=255, blank=False, null=True)
+
+class UserComment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=True, related_name='comments')
+    text = models.TextField(blank=False, null=True)
+    created_at = models.DateField(auto_now_add=True, null=True)
 
 def user_post_save(sender, instance, created, **kwargs):
     #import monthdelta

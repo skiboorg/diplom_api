@@ -50,7 +50,8 @@ class AddUser(APIView):
                 UserFile.objects.create(file=file,user=obj,description=files_descriptions[index])
             for network in user_networks:
                 network_json_data = json.loads(network)
-                UserNetwork.objects.create(user=obj,name=network_json_data['name'],link=network_json_data['link'])
+                print(network_json_data)
+                UserNetwork.objects.create(user=obj,network_id=network_json_data['id']['id'],link=network_json_data['link'])
 
         else:
             print(serializer.errors)
@@ -121,7 +122,7 @@ class GetNetworks(generics.ListAPIView):
     serializer_class = UserNetworksSerializer
 
 
-class DeleteUserByUuid(generics.DestroyAPIView):
+class DeleteUser(generics.DestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'uuid'
@@ -135,6 +136,13 @@ class DeleteUserComment(generics.DestroyAPIView):
     queryset = UserComment.objects.all()
     serializer_class = UserCommentSerializer
     lookup_field = 'id'
+
+class AddUserComment(APIView):
+    def post(self,request,*args,**kwargs):
+        user = User.objects.get(uuid=self.kwargs['uuid'])
+        UserComment.objects.create(user=user, text=request.data['text'])
+        return Response(status=status.HTTP_201_CREATED)
+
 
 class DeleteUserNetwork(generics.DestroyAPIView):
     queryset = UserNetwork.objects.all()

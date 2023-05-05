@@ -8,5 +8,7 @@ urlpatterns = [
     path('order/file/<pk>', views.FileOrder.as_view()),
     path('order/statuses', views.OrderStatus.as_view()),
     path('order/pay_statuses', views.PayStatus.as_view()),
+    path('order/<uuid>/comment/<comment_id>', views.OrderComments.as_view()),
+    path('order/<uuid>/file/<file_id>', views.OrderFiles.as_view()),
 
 ]

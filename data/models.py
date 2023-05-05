@@ -35,7 +35,7 @@ class Order(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, blank=False, null=True)
     pay_status = models.ForeignKey(PayStatus, on_delete=models.SET_NULL, blank=True, default=1, null=True)
     order_status = models.ForeignKey(OrderStatus, on_delete=models.SET_NULL, blank=True, default=1, null=True)
-    created_by = models.ForeignKey('user.User', on_delete=models.CASCADE, blank=False, null=True,related_name='created_by')
+    created_by = models.ForeignKey('user.User', on_delete=models.CASCADE, blank=True, null=True,related_name='created_by')
     user = models.ForeignKey('user.User', on_delete=models.CASCADE, blank=False, null=True,related_name='user')
     start_price = models.DecimalField('цена первоначальная', decimal_places=2, max_digits=10, blank=False, null=True)
     total_price = models.DecimalField('цена итоговая', decimal_places=2, max_digits=10, blank=True, null=True)
@@ -61,3 +61,9 @@ class OrderFile(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=False, null=True, related_name='files')
     file = models.FileField(upload_to='order/file', blank=False, null=True)
     description = models.CharField(max_length=255, blank=False, null=True)
+    created_at = models.DateField(auto_now_add=True, null=True)
+
+class OrderComment(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=False, null=True, related_name='comments')
+    text = models.TextField(blank=False, null=True)
+    created_at = models.DateField(auto_now_add=True, null=True)

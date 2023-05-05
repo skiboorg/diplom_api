@@ -5,6 +5,8 @@ from django_filters import IsoDateTimeFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .serializers import *
 from .models import *
 from rest_framework import generics, viewsets, parsers
@@ -35,6 +37,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=json_data)
         if serializer.is_valid():
             order = serializer.save()
+            order.created_by = request.user
+            order.save()
             for index,file in enumerate(request.FILES.getlist('files')):
                 OrderFile.objects.create(file=file,order=order,description=files_descriptions[index])
         else:
@@ -72,7 +76,6 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 class ManagerOrderFilter(django_filters.FilterSet):
     start_date_gte = IsoDateTimeFilter(field_name="start_date", lookup_expr='gte')
-
     class Meta:
         model = Order
         fields = {
@@ -87,8 +90,8 @@ class ManagerOrderFilter(django_filters.FilterSet):
 
 class ManagerOrder(generics.ListAPIView):
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()
-    lookup_field = 'created_by__uuid'
+    # queryset = Order.objects.all()
+    # lookup_field = 'id'
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = ManagerOrderFilter
     filterset_fields = ['is_dead_line_soon',
@@ -101,6 +104,9 @@ class ManagerOrder(generics.ListAPIView):
                         'order_status__id',
                         ]
     ordering_fields = ['start_date', 'end_date']
+
+    def get_queryset(self):
+        return Order.objects.filter(created_by__uuid=self.kwargs['created_by__uuid'])
 
 class UserOrder(generics.ListAPIView):
     serializer_class = OrderSerializer
@@ -122,6 +128,25 @@ class OrderStatus(generics.ListAPIView):
 class PayStatus(generics.ListAPIView):
     serializer_class = PayStatusSerializer
     queryset = PayStatus.objects.all()
+
+class OrderComments(APIView):
+    def post(self,request,comment_id=None,*args,**kwargs):
+        order = Order.objects.get(uuid=self.kwargs['uuid'])
+        OrderComment.objects.create(order=order,text=request.data['text'])
+        return Response(status=status.HTTP_201_CREATED)
+    def delete(self,request,comment_id,*args,**kwargs):
+        OrderComment.objects.get(id=comment_id).delete()
+        return Response(status=status.HTTP_200_OK)
+
+class OrderFiles(APIView):
+    def post(self,request,file_id=None,*args,**kwargs):
+        order = Order.objects.get(uuid=self.kwargs['uuid'])
+        OrderFile.objects.create(order=order,file=request.FILES.get('file'),description=request.data.get('description'))
+        return Response(status=status.HTTP_201_CREATED)
+
+    def delete(self,request,file_id,*args,**kwargs):
+        OrderFile.objects.get(id=file_id).delete()
+        return Response(status=status.HTTP_200_OK)
 
 
 

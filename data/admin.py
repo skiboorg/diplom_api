@@ -10,10 +10,19 @@ class OrderAdmin(admin.ModelAdmin):
     model = Order
     inlines = [OrderFileInline]
 
+class ServiceTabInline (admin.StackedInline):
+    model = ServiceTab
+    extra = 0
+class ServiceAdmin(admin.ModelAdmin):
+    model = Service
+    inlines = [ServiceTabInline]
+
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Category)
-admin.site.register(Service)
+admin.site.register(Direction)
+admin.site.register(Country)
+admin.site.register(Service, ServiceAdmin)
 admin.site.register(PayStatus)
 admin.site.register(OrderStatus)
 

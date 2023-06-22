@@ -28,9 +28,14 @@ class OrderStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderStatus
         fields = '__all__'
+class ServiceTabSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceTab
+        fields = '__all__'
 
 
 class ServiceSerializer(serializers.ModelSerializer):
+    tabs = ServiceTabSerializer(many=True, required=False, read_only=True)
     class Meta:
         model = Service
         fields = '__all__'
@@ -40,6 +45,21 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+
+
+class CountrySerializer(serializers.ModelSerializer):
+    services = ServiceSerializer(many=True, required=False, read_only=True)
+    class Meta:
+        model = Country
+        fields = '__all__'
+
+class DirectionSerializer(serializers.ModelSerializer):
+    countries = CountrySerializer(many=True, required=False, read_only=True)
+    class Meta:
+        model = Direction
+        fields = '__all__'
+
+
 
 
 class OrderFileSerializer(serializers.ModelSerializer):

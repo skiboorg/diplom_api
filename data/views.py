@@ -15,7 +15,21 @@ from rest_framework import generics, viewsets, parsers
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    lookup_field = 'name_slug'
 
+class DirectionViewSet(viewsets.ModelViewSet):
+    queryset = Direction.objects.all()
+    serializer_class = DirectionSerializer
+    lookup_field = 'name_slug'
+class CountryViewSet(viewsets.ModelViewSet):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+    lookup_field = 'name_slug'
+
+class ServiceViewSet(viewsets.ModelViewSet):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+    lookup_field = 'name_slug'
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()

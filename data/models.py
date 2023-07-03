@@ -54,7 +54,7 @@ class Country(models.Model):
 
 class Service(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=False, null=True, related_name='services')
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=False, null=True, related_name='services')
+    countries = models.ManyToManyField(Country, blank=False)
     name = models.CharField('Название', max_length=255, blank=False, null=True)
     name_slug = models.CharField(max_length=255, blank=True, null=True)
     info_text = models.TextField('Текст описания', blank=True, null=True)

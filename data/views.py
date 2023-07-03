@@ -138,6 +138,14 @@ class OrderStatus(generics.ListAPIView):
     serializer_class = OrderStatusSerializer
     queryset = OrderStatus.objects.all()
 
+class ServiceByCountry(generics.ListAPIView):
+    serializer_class = ServiceSerializer
+
+    def get_queryset(self):
+        country = Country.objects.get(name_slug=self.request.query_params.get('c'))
+        return Service.objects.filter(countries__in=[country.id])
+
+
 
 class PayStatus(generics.ListAPIView):
     serializer_class = PayStatusSerializer

@@ -138,6 +138,11 @@ class OrderStatus(generics.ListAPIView):
     serializer_class = OrderStatusSerializer
     queryset = OrderStatus.objects.all()
 
+
+class GetBanners(generics.ListAPIView):
+    serializer_class = BannerSerializer
+    queryset = Banner.objects.all()
+
 class ServiceByCountry(generics.ListAPIView):
     serializer_class = ServiceSerializer
 

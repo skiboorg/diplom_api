@@ -2,6 +2,17 @@ from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 import uuid
 from pytils.translit import slugify
+
+class Banner(models.Model):
+    image = models.FileField('Картинка', upload_to='banner/', blank=False, null=True)
+    url = models.CharField('Ссылка', max_length=255, blank=True, null=True)
+    def __str__(self):
+        return f'{self.id}'
+
+    class Meta:
+        verbose_name = 'Баннер'
+        verbose_name_plural = 'Баннер'
+
 class Category(models.Model):
     name = models.CharField('Название', max_length=255, blank=False, null=True)
     name_slug = models.CharField(max_length=255, blank=True, null=True)

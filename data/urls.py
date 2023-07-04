@@ -13,6 +13,7 @@ urlpatterns = [
     path('order/<uuid>/comment/<comment_id>', views.OrderComments.as_view()),
     path('order/<uuid>/file/<file_id>', views.OrderFiles.as_view()),
     path('service_by_country', views.ServiceByCountry.as_view()),
+    path('banner', views.GetBanners.as_view()),
     path('', include(router.urls)),
 
 ]

@@ -18,6 +18,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+class BannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banner
+        fields = '__all__'
+
+
 class PayStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = PayStatus

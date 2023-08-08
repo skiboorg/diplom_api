@@ -18,6 +18,8 @@ class Category(models.Model):
     name_slug = models.CharField(max_length=255, blank=True, null=True)
     price_from = models.IntegerField('Цена от', blank=False, null=True)
     image = models.FileField('Картинка', upload_to='category/', blank=False, null=True)
+    short_text = models.TextField('Короткое описание', blank=True, null=True)
+    text = RichTextUploadingField('Контент', blank=True, null=True)
 
     def __str__(self):
         return f'{self.name}'

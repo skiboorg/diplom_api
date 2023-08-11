@@ -26,6 +26,7 @@ admin.site.register(Service, ServiceAdmin)
 admin.site.register(PayStatus)
 admin.site.register(OrderStatus)
 admin.site.register(Banner)
+admin.site.register(CallbackForm)
 
 
 

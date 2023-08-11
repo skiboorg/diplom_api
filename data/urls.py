@@ -14,6 +14,7 @@ urlpatterns = [
     path('order/<uuid>/file/<file_id>', views.OrderFiles.as_view()),
     path('service_by_country', views.ServiceByCountry.as_view()),
     path('banner', views.GetBanners.as_view()),
+    path('cb', views.SaveForm.as_view()),
     path('', include(router.urls)),
 
 ]

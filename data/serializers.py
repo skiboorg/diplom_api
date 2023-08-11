@@ -83,13 +83,13 @@ class OrderCommentSerializer(serializers.ModelSerializer):
 class OrderSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
     files = OrderFileSerializer(many=True, required=False, read_only=True)
     comments = OrderCommentSerializer(many=True, required=False, read_only=True)
-    user = UserSaveSerializer(many=False, required=True, read_only=False)
-    pay_status = PayStatusSerializer(many=False, required=True, read_only=False)
-    order_status = OrderStatusSerializer(many=False, required=True, read_only=False)
-    category = CategorySerializer(many=False, required=True, read_only=False)
-    service = ServiceSerializer(many=False, required=True, read_only=False)
+    user = UserSaveSerializer(many=False, required=False, read_only=True)
+    pay_status = PayStatusSerializer(many=False, required=False, read_only=True)
+    order_status = OrderStatusSerializer(many=False, required=False, read_only=True)
+    category = CategorySerializer(many=False, required=False, read_only=True)
+    service = ServiceSerializer(many=False, required=False, read_only=True)
     # created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    created_by = UserSaveSerializer(many=False, required=True, read_only=False)
+    created_by = UserSaveSerializer(many=False, required=False, read_only=True)
     class Meta:
         model = Order
         fields = '__all__'

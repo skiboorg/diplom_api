@@ -58,9 +58,11 @@ class UserSaveSerializer(serializers.ModelSerializer):
         ]
 
 class UserSerializer(serializers.ModelSerializer):
+
     networks = UserNetworkSerializer(many=True, required=False, read_only=True)
     files = UserFileSerializer(many=True, required=False, read_only=True)
     comments = UserCommentSerializer(many=True, required=False, read_only=True)
+
 
     class Meta:
         model = User
@@ -79,7 +81,9 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'files',
             'networks',
-            'comments'
+            'comments',
+
+
 
         ]
 

@@ -79,10 +79,11 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance, data=json_data)
         if serializer.is_valid():
             order = serializer.save()
-            for index, file in enumerate(request.FILES.getlist('files')):
-                OrderFile.objects.create(file=file, order=order, description=files_descriptions[index])
+            if request.FILES.getlist('files'):
+                for index, file in enumerate(request.FILES.getlist('files')):
+                    OrderFile.objects.create(file=file, order=order, description=files_descriptions[index])
         else:
-            print(serializer.errors)
+            print('ddd', serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         headers = self.get_success_headers(serializer.data)
@@ -156,6 +157,10 @@ class PayStatus(generics.ListAPIView):
     serializer_class = PayStatusSerializer
     queryset = PayStatus.objects.all()
 
+class SaveForm(APIView):
+    def post(self,request):
+        CallbackForm.objects.create(**request.data)
+        return Response(status=status.HTTP_201_CREATED)
 class OrderComments(APIView):
     def post(self,request,comment_id=None,*args,**kwargs):
         order = Order.objects.get(uuid=self.kwargs['uuid'])

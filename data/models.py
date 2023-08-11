@@ -17,7 +17,7 @@ class Category(models.Model):
     name = models.CharField('Название', max_length=255, blank=False, null=True)
     name_slug = models.CharField(max_length=255, blank=True, null=True)
     price_from = models.IntegerField('Цена от', blank=False, null=True)
-    image = models.FileField('Картинка', upload_to='category/', blank=False, null=True)
+    image = models.FileField('Картинка', upload_to='category/', blank=True, null=True)
     short_text = models.TextField('Короткое описание', blank=True, null=True)
     text = RichTextUploadingField('Контент', blank=True, null=True)
 
@@ -75,8 +75,8 @@ class Service(models.Model):
     info_tab = RichTextUploadingField('Содержимое информационного таба', blank=True, null=True)
     price = models.IntegerField('Цена', blank=False, null=True)
     work_time = models.CharField('Срок исполнения', max_length=255, blank=True, null=True)
-    icon = models.FileField('Иконка', upload_to='service/', blank=False, null=True)
-    image = models.FileField('Картинка', upload_to='category/', blank=False, null=True)
+    icon = models.FileField('Иконка', upload_to='service/', blank=True, null=True)
+    image = models.FileField('Картинка', upload_to='category/', blank=True, null=True)
     def __str__(self):
         return f'{self.name}'
 
@@ -132,7 +132,7 @@ class Order(models.Model):
     pay_status = models.ForeignKey(PayStatus, on_delete=models.SET_NULL, blank=True, default=1, null=True)
     order_status = models.ForeignKey(OrderStatus, on_delete=models.SET_NULL, blank=True, default=1, null=True)
     created_by = models.ForeignKey('user.User', on_delete=models.CASCADE, blank=True, null=True,related_name='created_by')
-    user = models.ForeignKey('user.User', on_delete=models.CASCADE, blank=False, null=True,related_name='user')
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, blank=False, null=True,related_name='orders')
     start_price = models.DecimalField('цена первоначальная', decimal_places=2, max_digits=10, blank=False, null=True)
     total_price = models.DecimalField('цена итоговая', decimal_places=2, max_digits=10, blank=True, null=True)
     start_date = models.DateField('Стартовал', blank=True, null=True)
@@ -163,3 +163,13 @@ class OrderComment(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=False, null=True, related_name='comments')
     text = models.TextField(blank=False, null=True)
     created_at = models.DateField(auto_now_add=True, null=True)
+
+
+class CallbackForm(models.Model):
+    service =  models.ForeignKey(Service, on_delete=models.CASCADE, blank=False, null=True)
+    fio= models.CharField(max_length=255, blank=True, null=True)
+    email= models.CharField(max_length=255, blank=True, null=True)
+    phone= models.CharField(max_length=255, blank=True, null=True)
+    time_to_call= models.CharField(max_length=255, blank=True, null=True)
+    comment= models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)

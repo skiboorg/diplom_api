@@ -74,6 +74,11 @@ class OrderFileSerializer(serializers.ModelSerializer):
         model = OrderFile
         fields = '__all__'
 
+class CallbackFormSerializer(serializers.ModelSerializer):
+    service = ServiceSerializer(many=False, required=False, read_only=True)
+    class Meta:
+        model = CallbackForm
+        fields = '__all__'
 class OrderCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderComment

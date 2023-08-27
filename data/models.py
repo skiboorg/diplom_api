@@ -53,6 +53,7 @@ class Country(models.Model):
     name_slug = models.CharField(max_length=255, blank=True, null=True)
     flag = models.FileField('Флаг', upload_to='flags/', blank=False, null=True)
     direction = models.ForeignKey(Direction, on_delete=models.CASCADE, blank=False, null=True, related_name='countries')
+    text = RichTextUploadingField('Контент', blank=True, null=True)
     def __str__(self):
         return f'{self.name}'
 
@@ -173,3 +174,6 @@ class CallbackForm(models.Model):
     time_to_call= models.CharField(max_length=255, blank=True, null=True)
     comment= models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
+
+    class Meta:
+        ordering = ('-created_at',)

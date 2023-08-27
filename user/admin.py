@@ -25,6 +25,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': (
+                "avatar",
                 "login",
                 "fio",
                 "phone",
@@ -46,6 +47,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {'fields': ('login', 'password')}),
         ('Personal info',
          {'fields': (
+             'avatar',
              'added_by',
              'email',
                 "fio",

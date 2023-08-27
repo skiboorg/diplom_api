@@ -48,10 +48,14 @@ class OrderViewSet(viewsets.ModelViewSet):
         json_data = {}
         for dat in data:
             json_data[dat] = json.loads(data[dat])
+        print(json_data)
         serializer = self.get_serializer(data=json_data)
         if serializer.is_valid():
             order = serializer.save()
             order.created_by = request.user
+            order.category_id = json_data['category']['id']
+            order.service_id = json_data['service']
+            order.user_id = json_data['user']
             order.save()
             for index,file in enumerate(request.FILES.getlist('files')):
                 OrderFile.objects.create(file=file,order=order,description=files_descriptions[index])
@@ -156,6 +160,9 @@ class ServiceByCountry(generics.ListAPIView):
 class PayStatus(generics.ListAPIView):
     serializer_class = PayStatusSerializer
     queryset = PayStatus.objects.all()
+class AllForms(generics.ListAPIView):
+    serializer_class = CallbackFormSerializer
+    queryset = CallbackForm.objects.all()
 
 class SaveForm(APIView):
     def post(self,request):

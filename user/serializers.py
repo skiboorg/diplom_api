@@ -82,6 +82,7 @@ class UserSerializer(serializers.ModelSerializer):
             'files',
             'networks',
             'comments',
+            'avatar',
 
 
 

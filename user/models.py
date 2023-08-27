@@ -45,6 +45,7 @@ class User(AbstractUser):
     lastname = None
     added_by = models.ForeignKey('self',on_delete=models.CASCADE, blank=True, null=True, related_name='user_added_by')
     uuid = models.UUIDField(default=uuid.uuid4, db_index=True)
+    avatar = models.ImageField(upload_to='ava/', blank=True, null=True, unique=True)
     login = models.CharField('Логин', max_length=20, blank=True, null=True, unique=True)
     email = models.CharField('Почта', max_length=20, blank=True, null=True)
     fio = models.CharField('ФИО', max_length=50, blank=True, null=True)

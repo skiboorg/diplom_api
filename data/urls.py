@@ -15,6 +15,7 @@ urlpatterns = [
     path('service_by_country', views.ServiceByCountry.as_view()),
     path('banner', views.GetBanners.as_view()),
     path('cb', views.SaveForm.as_view()),
+    path('all_forms', views.AllForms.as_view()),
     path('', include(router.urls)),
 
 ]

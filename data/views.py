@@ -162,8 +162,14 @@ class PayStatus(generics.ListAPIView):
     queryset = PayStatus.objects.all()
 class AllForms(generics.ListAPIView):
     serializer_class = CallbackFormSerializer
-    queryset = CallbackForm.objects.all()
+    queryset = CallbackForm.objects.filter(is_hidden=False)
 
+class HideForm(APIView):
+    def post(self, request):
+        form = CallbackForm.objects.get(id=request.data['id'])
+        form.is_hidden = True
+        form.save()
+        return Response(status=200)
 class SaveForm(APIView):
     def post(self,request):
         CallbackForm.objects.create(**request.data)

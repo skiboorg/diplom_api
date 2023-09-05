@@ -16,6 +16,7 @@ urlpatterns = [
     path('banner', views.GetBanners.as_view()),
     path('cb', views.SaveForm.as_view()),
     path('all_forms', views.AllForms.as_view()),
+    path('hide_form', views.HideForm.as_view()),
     path('', include(router.urls)),
 
 ]

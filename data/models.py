@@ -174,6 +174,7 @@ class CallbackForm(models.Model):
     time_to_call= models.CharField(max_length=255, blank=True, null=True)
     comment= models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
+    is_hidden = models.BooleanField(default=False, null=True)
 
     class Meta:
         ordering = ('-created_at',)
